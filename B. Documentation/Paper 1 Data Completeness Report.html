@@ -1,0 +1,67 @@
+﻿<!doctype html>
+<html><head><meta charset="utf-8"><title>Paper 1 Data Completeness Report</title>
+<style>
+@page{size:A4 landscape;margin:14mm}body{font-family:Arial,sans-serif;color:#1f2937;font-size:10px;line-height:1.35}h1{color:#123b5d;font-size:24px;margin:0 0 4px}h2{color:#123b5d;border-bottom:2px solid #2f75b5;padding-bottom:4px;margin-top:20px;margin-bottom:8px;break-after:avoid;page-break-after:avoid}h3{color:#315f7d;margin-bottom:4px}.subtitle{color:#667085;margin-bottom:14px}.summary{display:flex;gap:8px;margin:10px 0 16px}.card{padding:9px 12px;border-radius:6px;font-weight:bold}.green{background:#d9ead3;color:#274e13}.yellow{background:#fff2cc;color:#7f6000}.red{background:#f4cccc;color:#990000}.blue{background:#d9eaf7;color:#1f4e79}.gray{background:#e7e6e6;color:#444}table{width:100%;border-collapse:collapse;margin:0 0 14px;page-break-inside:auto;break-before:avoid;page-break-before:avoid}h2+table{margin-top:0}thead{display:table-header-group}tr{page-break-inside:avoid;break-inside:avoid}th{background:#1f4e78;color:white;text-align:left;padding:6px;border:1px solid #b7c9d6}td{padding:5px;border:1px solid #cbd5e1;vertical-align:top}.note-cell{min-width:90px;background:#fffdf2!important}tr:nth-child(even) td{background:#f8fafc}.status{font-weight:bold;white-space:nowrap}.small{font-size:9px;color:#475467}.note{background:#eef6fb;border-left:4px solid #2f75b5;padding:8px;margin:8px 0}.warning{background:#fff8e1;border-left:4px solid #d6a700;padding:8px;margin:8px 0}.critical{background:#fff0f0;border-left:4px solid #c00000;padding:8px;margin:8px 0}code{font-family:Consolas,monospace;font-size:9px}ul{margin-top:4px}</style></head>
+<body>
+<h1>Paper 1 (SDG 4.1.4) — Data Completeness Report</h1>
+<div class="subtitle">Out-of-school rate cohort model reproduction | Inventory checked 5 October 2026</div>
+<div class="summary"><div class="card green">CORE ADMIN INPUT: ASSEMBLED</div><div class="card green">POPULATION SOURCES: ASSEMBLED</div><div class="card yellow">SURVEY INPUT: PARTIAL</div><div class="card red">WIDE NOT MODEL-READY</div><div class="card blue">VALIDATION DATA: PRESENT</div></div>
+
+<h2>1. Executive conclusion</h2>
+<div class="note"><b>Inputs have been assembled for a preliminary fit:</b> the current MF input has 213 countries, 7 UIS SDG regions, 37,060 administrative observations and 6,028 DHS/MICS/Census observations. Male and female inputs have also been built. The input builder applies the selected region, age, sex and observation filters.</div>
+<div class="warning"><b>This is not yet a complete paper reproduction:</b> WIDE/“Other” is excluded because available aggregates do not provide the model's single-age observations and clustered-Jackknife standard errors. Colombia ECV and Papua New Guinea HIES also remain unavailable. WIDE rows are retained for future work but are not included in Eq. 2.</div>
+
+<h2>2. Main data inventory</h2>
+<table><tr><th>Component</th><th>Required by paper</th><th>Available in project</th><th>Status</th><th>Remaining issue / action</th><th>Note</th></tr>
+<tr><td>Population denominators</td><td>Country × year × single age × sex; 2000–2022 model window.</td><td>WPP 2024 (1950–2023); Eurostat (1960–2025); SingStat M810801 (1980–2025, single-age residents).</td><td class="status green">PRESENT</td><td>Harmonise country codes, sex labels and population definition. Confirm whether Singapore residents (citizens + permanent residents) match the paper.</td><td class="note-cell"></td></tr>
+<tr><td>Administrative enrolment</td><td>Raw enrolment counts by country, year, single age, sex and education level; retain negative observations before cleaning.</td><td><code>uis_internal_enrolment_single_age_2000_2022.csv</code>; 2,187,405 rows; 117 countries; 2000–2022. Quality file records 607,236 negative values.</td><td class="status green">PRESENT</td><td>Confirm indicator selection and aggregate across education levels by country × year × age × sex before calculating rates.</td><td class="note-cell"></td></tr>
+<tr><td>Survey observations</td><td>Household/census observations used in the paper, including school attendance and survey design/weights.</td><td>DHS, MICS and IPUMS extracts harmonized; current MF input contains 6,028 observations. WIDE aggregates exist for 14 target sources.</td><td class="status yellow">PARTIAL</td><td>WIDE is excluded: available aggregates lack single-age records and clustered-Jackknife SEs. Colombia ECV person file and Papua New Guinea HIES remain unavailable.</td><td class="note-cell"></td></tr>
+<tr><td>Regional hierarchy</td><td>Country-to-region mapping for regional random effects.</td><td>Current inputs use 7 UIS SDG regions consistently.</td><td class="status green">IMPLEMENTED</td><td>Documented as a reproduction convention pending confirmation from UIS source code.</td><td class="note-cell"></td></tr>
+</table>
+
+<h2>3. Administrative data currently present</h2>
+<table><tr><th>Folder / source</th><th>What it provides</th><th>Use in model</th><th>Status</th><th>Note</th></tr>
+<tr><td><code>1. Population Denominators/1. WPP (2024 revision, 1950-2023 estimates)/</code></td><td>Single-age population denominator for most countries.</td><td>Yes — denominator.</td><td class="status green">USE</td><td class="note-cell"></td></tr>
+<tr><td><code>1. Population Denominators/2. Eurostat (1960-2025)/</code></td><td>Single-age European population denominator.</td><td>Yes — denominator where assigned.</td><td class="status green">USE</td><td class="note-cell"></td></tr>
+<tr><td><code>1. Population Denominators/3. SingStat (M810801, single-age residents, 1980-2025)/</code></td><td>Singapore residents by single year of age and sex, end-June annual.</td><td>Yes — Singapore denominator, subject to definition check.</td><td class="status green">USE</td><td class="note-cell"></td></tr>
+<tr><td><code>2. Administrative Data/1. UIS Internal Database - Paper 1 Enrolment/</code></td><td>Raw single-age enrolment data and inventories/quality checks.</td><td>Yes — primary administrative numerator.</td><td class="status green">USE</td><td class="note-cell"></td></tr>
+</table>
+
+<h2>4. Survey and WIDE completeness</h2>
+<table><tr><th>Letter / country</th><th>Paper source</th><th>Current file/status</th><th>Assessment</th><th>Next action</th><th>Note</th></tr>
+<tr><td>a. Argentina</td><td>EPH, 2004–2012</td><td><code>wide_argentina_eph.csv</code></td><td class="status green">AVAILABLE</td><td>Filter to paper years and required indicator rows.</td><td class="note-cell"></td></tr>
+<tr><td>b. Armenia</td><td>ILCS, 2018</td><td><code>wide_armenia_ilcs.csv</code></td><td class="status green">AVAILABLE</td><td>Validate age/sex/denominator interpretation.</td><td class="note-cell"></td></tr>
+<tr><td>c. Bolivia</td><td>EH, 2019</td><td><code>wide_bolivia_eh.csv</code></td><td class="status green">AVAILABLE</td><td>Filter to 2019 and required indicators.</td><td class="note-cell"></td></tr>
+<tr><td>d. Brazil</td><td>PNAD, 2007–2015</td><td><code>wide_brazil_pnad.csv</code></td><td class="status green">AVAILABLE</td><td>Restrict to paper years; avoid later WIDE rounds.</td><td class="note-cell"></td></tr>
+<tr><td>e. Chile</td><td>CASEN, 2000–2015</td><td><code>wide_chile_casen.csv</code></td><td class="status green">AVAILABLE</td><td>Restrict to paper years.</td><td class="note-cell"></td></tr>
+<tr><td>f. China</td><td>CFPS, 2010–2014</td><td><code>wide_china_cfps.csv</code></td><td class="status green">AVAILABLE</td><td>Restrict to paper years.</td><td class="note-cell"></td></tr>
+<tr><td>g. Colombia</td><td>ECV, 2019</td><td><code>colombia_ecv_2019_educacion.dta</code>; original ZIP and metadata also present.</td><td class="status yellow">PARTIAL</td><td>Obtain the matching person/household file with age and sex; merge using the ECV identifiers.</td><td class="note-cell"></td></tr>
+<tr><td>h. Ecuador</td><td>ENEMDU, 2018</td><td><code>wide_ecuador_enemdu.csv</code></td><td class="status green">AVAILABLE</td><td>Restrict to 2018.</td><td class="note-cell"></td></tr>
+<tr><td>i. El Salvador</td><td>EHPM, 2019</td><td><code>wide_el_salvador_ehpm.csv</code></td><td class="status green">AVAILABLE</td><td>Restrict to 2019.</td><td class="note-cell"></td></tr>
+<tr><td>j. Mexico</td><td>ENIGH, 2018</td><td><code>wide_mexico_enigh.csv</code></td><td class="status green">AVAILABLE</td><td>Restrict to 2018.</td><td class="note-cell"></td></tr>
+<tr><td>k. Papua New Guinea</td><td>HIES, 2009</td><td>No confirmed HIES microdata in project. A PNG HIES education catalogue was identified; WIDE master has no usable HIES row for PNG.</td><td class="status red">MISSING</td><td>Download full PNG HIES 2009–2010 person/education data, including age, sex, current attendance, weight, PSU and household ID.</td><td class="note-cell"></td></tr>
+<tr><td>l. Paraguay</td><td>EPHC, 2019</td><td><code>wide_paraguay_ephc.csv</code></td><td class="status green">AVAILABLE</td><td>Restrict to 2019.</td><td class="note-cell"></td></tr>
+<tr><td>m. Peru</td><td>ENAHO, 2019</td><td><code>wide_peru_enaho.csv</code></td><td class="status green">AVAILABLE</td><td>Restrict to 2019.</td><td class="note-cell"></td></tr>
+<tr><td>n. Russia</td><td>RLMS-HSE, 2000–2019</td><td><code>wide_russia_rlms_hse.csv</code></td><td class="status green">AVAILABLE</td><td>Verify the available years against the paper selection.</td><td class="note-cell"></td></tr>
+<tr><td>o. Tanzania</td><td>HBS, 2017</td><td><code>wide_tanzania_hbs.csv</code></td><td class="status green">AVAILABLE</td><td>Verify the 2017 row and indicator definitions.</td><td class="note-cell"></td></tr>
+<tr><td>p. Uruguay</td><td>ECH, 2019</td><td><code>wide_uruguay_ech.csv</code></td><td class="status green">AVAILABLE</td><td>Restrict to 2019.</td><td class="note-cell"></td></tr>
+</table>
+
+<h2>5. Other survey components</h2>
+<table><tr><th>Source</th><th>Status</th><th>What is still needed</th><th>Note</th></tr>
+<tr><td>MICS</td><td class="status green">HARMONIZED</td><td>197 national surveys usable in the processed observations; 39 rows without usable Jackknife SE are omitted from the model input. See <code>mics_file_inventory.csv</code>.</td><td class="note-cell"></td></tr>
+<tr><td>DHS</td><td class="status green">HARMONIZED</td><td>182 PR files received and harmonized for the paper period; processed observation file feeds the model input.</td><td class="note-cell"></td></tr>
+<tr><td>IPUMS International</td><td class="status green">HARMONIZED</td><td>Version 7.3 census extract processed into attendance observations and Jackknife standard errors.</td><td class="note-cell"></td></tr>
+</table>
+
+<h2>6. Validation-only data (do not use as model inputs)</h2>
+<table><tr><th>Folder</th><th>Purpose</th><th>Status</th><th>Note</th></tr>
+<tr><td>Official Modelled Estimates (ROFST.MOD)</td><td>Compare final fitted results with the published UIS/GEMR output.</td><td class="status blue">KEEP / VALIDATE</td><td class="note-cell"></td></tr>
+<tr><td>Public API Admin OOSC rates (ROFST.CP)</td><td>Coarse country-year-ISCED sanity check; pre-cleaned and not single-age.</td><td class="status blue">KEEP / REFERENCE</td><td class="note-cell"></td></tr>
+<tr><td>Public API Household Survey OOSC rates (ROFST.H)</td><td>Coarse survey-side cross-check; not raw survey input.</td><td class="status blue">KEEP / REFERENCE</td><td class="note-cell"></td></tr>
+</table>
+
+<h2>7. Remaining factors before a full reproduction fit</h2>
+<ol><li>Verify the age-2000 prior interpretation and annual spline degree/boundary convention against paper details or UIS code.</li><li>Decide whether compatible single-age WIDE data and clustered-Jackknife uncertainty can be obtained; otherwise report results as a partial reproduction.</li><li>The revised four-chain, 14-country MF pilot spans all seven SDG regions and passed: 1,000 warmup and 1,000 retained draws per chain, no thinning, target acceptance 0.99, max R-hat 1.0073, min n_eff 885.4, zero divergences and no invalid diagnostics.</li><li>A controlled rerun of the original eight-country subset still failed (max R-hat 1.0187, min n_eff 268.8, zero divergences). The limiting term is the MICS2 wave-error scale; the subset has only 24 MICS2 cells across COD and TCD, and COD has only one administrative observation, indicating weak support in that small subset.</li><li>Run corresponding M and F subset pilots and review diagnostics before full-country fits. The passing MF pilot is not evidence that all sex-specific full fits will converge.</li></ol>
+<div class="critical"><b>Current status:</b> a regionally stratified MF pilot passes convergence checks, while the smaller original subset remains weakly identified. Exact spline/anchor conventions still need confirmation, and WIDE/“Other” is not in the likelihood. No full-country fits have been run; current outputs remain partial-reproduction pilot results.</div>
+</body></html>

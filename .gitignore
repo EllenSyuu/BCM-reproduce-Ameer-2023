@@ -1,0 +1,53 @@
+# Local environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.DS_Store
+desktop.ini
+
+# Local/editor files
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# Internal, restricted, or locally received data
+A. Data/A.1. Raw Sources/**
+A. Data/A.2. Processed/**
+*.csv
+*.tsv
+*.xlsx
+*.xls
+*.zip
+*.gz
+*.rda
+*.RData
+*.parquet
+*.feather
+*.sav
+*.dta
+*.sqlite
+*.db
+
+# Internal working documents and local extracts
+B. Documentation/2. Internal UIS Data Request.md
+B. Documentation/3. UIS Data Received Audit.md
+D. Code/**/SQL/uis_internal_extraction.sql
+
+# Copyrighted reference papers should not be mirrored in a public repository
+C. Reference Papers/**
+
+# Model outputs and logs
+*.log
+*.json
+*.nc
+*.h5
+*.hdf5
+output/
+outputs/
+results/
+figures/

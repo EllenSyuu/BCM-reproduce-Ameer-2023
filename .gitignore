@@ -1,5 +1,7 @@
 # Local environments and caches
 .venv/
+.claude/
+.vs/
 __pycache__/
 *.py[cod]
 .pytest_cache/
@@ -7,6 +9,7 @@ __pycache__/
 .ruff_cache/
 .DS_Store
 desktop.ini
+*.lnk
 
 # Local/editor files
 .vs/
@@ -34,12 +37,15 @@ A. Data/A.2. Processed/**
 *.db
 
 # Internal working documents and local extracts
-B. Documentation/2. Internal UIS Data Request.md
-B. Documentation/3. UIS Data Received Audit.md
-D. Code/**/SQL/uis_internal_extraction.sql
+docs/internal/
+docs/2. Internal UIS Data Request.md
+docs/3. UIS Data Received Audit.md
+**/internal/
+**/SQL/
 
 # Copyrighted reference papers should not be mirrored in a public repository
 C. Reference Papers/**
+docs/reference-papers/**
 
 # Model outputs and logs
 *.log

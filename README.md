@@ -1,5 +1,8 @@
 # Bayesian Reproduction of SDG 4.1.4 Out-of-School Rates
 
+> **Status: method and pipeline developed · full empirical reproduction pending restricted inputs**  
+> **Public-safe repository · no raw microdata, internal extracts, credentials, or unpublished estimates**
+
 An independent, non-official reproduction of the Bayesian cohort model described in the published SDG 4.1.4 out-of-school-rate paper.
 
 This repository makes the work auditable: the model translation, data contracts, harmonisation logic, validation plan, and known deviations are documented separately. It is not the original UNESCO/UIS/GEMR implementation and is not endorsed by UNESCO, UIS, GEMR, or the paper authors.
@@ -35,10 +38,11 @@ The public repository contains code, method notes, synthetic checks, and high-le
 ## Repository map
 
 ```text
-A. Data/                         Local data area; raw/processed data are ignored.
-B. Documentation/                Public method notes and project status.
-C. Reference Papers/             Local reference material; not for redistribution.
-D. Code/                         Acquisition, harmonisation, model assembly, fitting.
+ A. Data/                        Local data area; raw/processed data are ignored.
+ docs/                           Public method notes, status, and provenance.
+ src/oosc_4_1_4/                 Acquisition, harmonisation, model assembly, fitting.
+ examples/workshop/              Small public-safe workflow demonstration.
+ C. Reference Papers/            Local reference material; not for redistribution.
 PUBLICATION_NOTES.md             Public-release and privacy checklist.
 requirements.txt                 Python dependencies.
 ```

@@ -1,4 +1,4 @@
-# Model implementation notes — `src/oosc_4_1_4/Stan/oosc_cohort_model.stan`
+# Model implementation notes — `src/stan/oosc_cohort_model.stan`
 
 Judgment calls made translating the paper's equations into a runnable Stan program.
 Flag these for review against UIS's actual implementation if/when a reference
@@ -49,7 +49,7 @@ try: add a weak anchor on `alpha[c][1,]` (the youngest post-entry age row), sinc
 Eq. 11's row-smoothing only starts at g=2 and Eq. 13's column-sum constraint may not
 fully pin down the g=1 row on its own.
 
-## 4. Spline basis construction (see `src/oosc_4_1_4/Python/spline_basis.py`)
+## 4. Spline basis construction (see `src/python/spline_basis.py`)
 The paper says "B-spline" / "P-spline" with annual knots (mu) and 5-year-interval
 knots (alpha) but doesn't give the spline degree or boundary-knot handling. We use
 cubic B-splines (`scipy.interpolate.BSpline`, degree 3, clamped boundary knots) with

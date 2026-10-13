@@ -34,6 +34,3 @@ The project has moved beyond a blank scaffold: the repository structure, public-
 - **Available locally** does not mean safe to publish.
 - **Complete reproduction** is reserved for a run with required inputs, diagnostics, validation, and documented deviations.
 
-## Update protocol
-
-For each milestone, record the date, change, evidence, and remaining limitation. Keep restricted file names, data values, internal contacts, and access instructions out of this public page.

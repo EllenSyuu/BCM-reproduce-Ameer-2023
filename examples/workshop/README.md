@@ -16,7 +16,7 @@ The demonstration is deliberately separate from production data and full-scale f
 
 ## Related code
 
-- `src/oosc_4_1_4/Python/` — acquisition, harmonisation, model assembly, and fitting modules;
-- `src/oosc_4_1_4/Stan/` — equation-level reference model;
+- `src/python/` — acquisition, harmonisation, model assembly, and fitting modules;
+- `src/stan/` — equation-level reference model;
 - `docs/0. Public Project Status.md` — current capabilities and remaining gaps;
 - `docs/4. Model Notes.md` — modelling choices and translation notes.

@@ -29,6 +29,3 @@ The paper's central administrative component requires raw enrolment counts by co
 
 Before admitting a source to the model, document whether it has single-age or education-level support; whether sex, country, and year definitions match; whether numerator and denominator are compatible; whether weights, clusters, and uncertainty are available; whether the source vintage matches the paper; and whether the licence permits the intended use.
 
-## Public-release rule
-
-Do not commit raw or processed data merely because a file is technically accessible. Check source terms and `.gitignore`, then inspect the staged file list before every push. Use synthetic fixtures or small non-sensitive summaries for public examples.

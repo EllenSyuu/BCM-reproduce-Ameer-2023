@@ -2,10 +2,10 @@
 
 Builds the B1 (mu, annual knots) and B5 (alpha/Theta, 5-year knots) basis
 matrices referenced in the sibling Stan/oosc_cohort_model.stan
-and documented in B. Documentation/4. Model Notes.md section 4.
+and documented in docs/model-notes.md section 4.
 
 Choices made here (cubic B-spline, knot spacing, boundary handling) are not
-fully pinned down by the paper -- see B. Documentation/4. Model Notes.md before
+fully pinned down by the paper -- see docs/model-notes.md before
 treating results as a faithful reproduction.
 """
 from __future__ import annotations

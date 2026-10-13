@@ -20,7 +20,7 @@ country-year-age-sex may have more than one row, one per level reported):
 
 This module is data-source-agnostic: it doesn't know how to *get* UIS
 administrative counts (that's the blocked step, see
-B. Documentation/2. Internal UIS Data Request.md)
+docs/internal_uis_data_request.md)
 -- it only knows what to do with them once you have a dataframe in the shape
 above. Tested here against synthetic data so the exclusion logic itself is
 verified ahead of getting real data.
@@ -103,7 +103,7 @@ def apply_exclusion_rules(
     # threshold for subsequent levels) requires a country-specific judgment
     # call the paper doesn't fully mechanize ("if enrolment counts for age 15
     # routinely include material levels of primary enrolment..."). Left as a
-    # manual review step -- see B. Documentation/4. Model Notes.md item 6 /
+    # manual review step -- see docs/model-notes.md item 6 /
     # README known gaps.
     return cells
 

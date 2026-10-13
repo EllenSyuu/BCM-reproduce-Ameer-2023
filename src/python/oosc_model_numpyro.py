@@ -3,7 +3,7 @@
 
 Chosen over CmdStan/cmdstanpy specifically to avoid needing a system C++
 compiler (RTools on Windows): JAX/NumPyro JIT-compiles via XLA and needs no
-separate toolchain install. See B. Documentation/4. Model Notes.md section 8
+separate toolchain install. See docs/model-notes.md section 8
 for the
 Stan <-> NumPyro correspondence and a note on where the translation required
 care (the `alpha` 2D smoothing terms, Eq. 11-13, are Stan `target +=` penalty

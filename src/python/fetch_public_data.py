@@ -4,7 +4,7 @@ Covers the three sources named in the paper (Appendix A.1): WPP for most
 countries, Eurostat for European countries, SingStat for Singapore. All three
 are public / no registration required, so this is the unblocked half of data
 acquisition -- run this before chasing DHS/MICS/IPUMS access or the UIS
-administrative-data request (B. Documentation/2. Internal UIS Data Request.md).
+administrative-data request (docs/internal_uis_data_request.md).
 
 Output: single-age population counts by country/year/sex, written under
 A. Data/A.1. Raw Sources/1. Population Denominators/{1. WPP.../2. Eurostat.../3. SingStat...}/
@@ -88,7 +88,7 @@ def load_wpp_from_xlsx(
     in the case above), not necessarily the WPP2019 revision the paper used --
     the UN revises historical estimates with each release, so this won't be
     bit-exact against the paper's published figures. Flagged in
-    B. Documentation/4. Model Notes.md as a known, accepted deviation rather
+    docs/model-notes.md as a known, accepted deviation rather
     than silently treated as equivalent.
 
     openpyxl's read_only worksheet.dimensions / max_column / max_row can

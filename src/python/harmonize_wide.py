@@ -20,7 +20,7 @@ Choices (documented, change here if needed):
 - Rates of exactly 0 or 1 are dropped (probit undefined in Eq. 2), as for the
   other sources.
 - Papua New Guinea (HIES) and Colombia (ECV) are unavailable -- see
-  B. Documentation/1. Data Sources Catalog.md.
+  docs/data-sources.md.
 
 Input : A. Data/A.1. Raw Sources/3. Survey Data/4. WIDE/<country>/wide_*.csv
 Output: A. Data/A.2. Processed/wide_oosc_observations.csv

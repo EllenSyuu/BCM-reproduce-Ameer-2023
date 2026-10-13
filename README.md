@@ -1,161 +1,68 @@
-# GEM Bayesian Model Reproduction — Out-of-School Rate (SDG 4.1.4)
+# Bayesian Reproduction of SDG 4.1.4 Out-of-School Rates
 
-> **Important:** This is an independent, non-official reproduction attempt. It
-> is not the original implementation and is not endorsed by UNESCO, UIS, GEMR,
-> or the paper authors. Internal and restricted data are intentionally excluded
-> from this project and must not be uploaded to a public repository. See
-> `PUBLICATION_NOTES.md` before publishing.
+An independent, non-official reproduction of the Bayesian cohort model described in the published SDG 4.1.4 out-of-school-rate paper.
 
-Reproduction of the UNESCO Institute for Statistics / Global Education Monitoring Report
-Bayesian cohort model for SDG indicator 4.1.4 (out-of-school rates), as specified in
-`C. Reference Papers/Paper 1 - OOSC Cohort Model (4.1.4).pdf`.
+This repository makes the work auditable: the model translation, data contracts, harmonisation logic, validation plan, and known deviations are documented separately. It is not the original UNESCO/UIS/GEMR implementation and is not endorsed by UNESCO, UIS, GEMR, or the paper authors.
 
-A second workstream reproducing the ABCR completion-rate model (SDG 4.1.2,
-`C. Reference Papers/Paper 2 - School Completion Rate ABCR (4.1.2).pdf`) will follow
-the same structure once this one is running end-to-end.
+## Current status — 13 October 2026
 
-## Status
+| Workstream | Status | Evidence / boundary |
+|---|---|---|
+| Project scaffold and environment | Complete | Repository structure and dependencies are documented. |
+| Population denominators | Implemented and checked | Public single-age sources are wired into the acquisition path. |
+| Administrative enrolment input | Blocked | The raw age-by-sex enrolment extract required by the paper is restricted and excluded. |
+| Survey/census harmonisation | Partially implemented | Source-specific harmonisers and a common observation contract exist; access and coverage vary. |
+| Cohort model translation | Implemented on synthetic data | A Stan equation reference and a NumPyro/JAX execution path are maintained. |
+| Full real-data reproduction | Not complete | It requires the restricted administrative input and final source-vintage decisions. |
+| Validation and paper comparison | Planned / partial | The validation design exists; no final real-data equivalence claim is made. |
 
-Phase 0 (scaffold) done and verified on synthetic data. Phase 1 (public data) done —
-WPP, Eurostat, and SingStat population data all fetched and verified live. SingStat
-table M810801 provides Singapore resident population by single year of age and sex.
-Phases 2+ blocked on real data (UIS
-admin data request, DHS/MICS/IPUMS registration — both on the user's side). No
-real-world fit yet.
+**Bottom line:** the computational pipeline is substantially developed, but the full empirical reproduction is not complete.
 
-## Project structure
+## What this project demonstrates
 
-```
-A. Data/
-  A.1. Raw Sources/
-    1. Population Denominators/       -- WPP, Eurostat, SingStat (verified single-age)
-    2. Administrative Data/           -- UIS internal single-age enrolment data.
-    3. Survey Data/                   -- MICS (received, verified), DHS (pending
-                                          project approval), IPUMS (census CSV extract
-                                          received 2026-09-28)
-    4. Validation Reference (Not Model Input)/ -- UIS's own official modelled output
-                                          (ROFST.MOD, for validating our results later)
-                                          and public API indicators for validation
-  A.2. Processed/                     -- harmonized model-ready data (empty until
-                                          Phase 2/3 unblocks)
-B. Documentation/                     -- data source catalog, UIS request checklist,
-                                          received-data audit, model implementation notes
-C. Reference Papers/                  -- the two source papers (4.1.4 and 4.1.2)
-D. Code/
-  D.1. Paper 1 - OOSC Cohort Model (4.1.4)/
-    Python/                            -- the model actually run in this environment
-    Stan/                              -- canonical equation-level Stan implementation
-  D.2. Paper 2 - ABCR Completion Rate Model (4.1.2)/ -- not started yet
-README.md
-requirements.txt
-.venv/                                -- local Python environment
+- Translation of a multi-equation cohort model into executable probabilistic code.
+- Explicit mapping from paper quantities to country-year-age-sex data structures.
+- Data-source triage based on coverage, provenance, access conditions, and model compatibility.
+- Harmonisation of administrative-style and survey observations into a common model contract.
+- Uncertainty handling using source-appropriate survey design information where available.
+- Synthetic end-to-end checks for exclusion rules, spline bases, parameter constraints, and sampling.
+- Transparent documentation of deviations instead of presenting a partial reproduction as an exact one.
+
+## Data-protection boundary
+
+The public repository contains code, method notes, synthetic checks, and high-level data documentation. It must not contain restricted microdata, raw administrative extracts, credentials, cookies, tokens, personal information, unpublished outputs, or copyrighted reference PDFs without redistribution permission. Authorised local users may place permitted inputs in the ignored data directories and run the documented pipeline without publishing those files.
+
+## Repository map
+
+```text
+A. Data/                         Local data area; raw/processed data are ignored.
+B. Documentation/                Public method notes and project status.
+C. Reference Papers/             Local reference material; not for redistribution.
+D. Code/                         Acquisition, harmonisation, model assembly, fitting.
+PUBLICATION_NOTES.md             Public-release and privacy checklist.
+requirements.txt                 Python dependencies.
 ```
 
-## Reproduction plan
+## Reproduction workflow
 
-### Phase 0 — Scaffold (done, verified on synthetic data)
-- Project structure, model implementation, spline basis helpers, public-data fetch
-  stubs, admin-data harmonization logic.
-- Toolchain: Python (not R). NumPyro/JAX drives the model (not `cmdstanpy`/CmdStan —
-  see Phase 4). See `requirements.txt`. A local `.venv/` holds the environment.
-- Everything below marked "verified" has actually been run and checked against
-  real output (live API calls, synthetic-data self-tests, or an end-to-end NUTS
-  fit), not just written and assumed correct — see conversation/session history
-  for the specific bugs this caught (an off-by-one in the entry-year grid, a
-  logic error in the admin-data exclusion rules, a missing User-Agent header
-  on the SingStat API).
+1. Acquire only data for which you have permission and retain it locally.
+2. Build public population denominators.
+3. Convert permitted administrative or survey inputs to the documented observation contract.
+4. Apply exclusions and uncertainty calculations.
+5. Assemble model input by sex population and region.
+6. Fit the NumPyro/JAX model, or inspect the Stan reference implementation.
+7. Save diagnostics and derived summaries locally; publish only approved aggregates or synthetic examples.
 
-### Phase 1 — Public data acquisition
-- Population denominators: UN World Population Prospects (WPP), Eurostat, SingStat.
-- Survey data: DHS, MICS, IPUMS-International census extracts, plus the ~16
-  country-specific household surveys listed in the paper's Appendix A.1 (EPH, ILCS, EH,
-  PNAD, CASEN, CFPS, ECV, ENEMDU, EHPM, ENIGH, HIES, EPHC, ENAHO, RLMS-HSE, HBS, ECH).
-- Each of these needs separate registration/access terms — see
-  `B. Documentation/1. Data Sources Catalog.md`.
+Do not infer a successful full reproduction from a successful synthetic smoke test.
 
-### Phase 2 — Administrative data (BLOCKED on UIS internal access)
-- Age-by-age, sex-disaggregated enrolment counts from UIS, by country-year.
-- This is NOT the same as UIS.Stat's public bulk download, which only publishes
-  pre-aggregated indicators (already netted against population, negatives dropped).
-  We specifically need the *raw* enrolment counts and the *raw* population denominators
-  used to compute out-of-school rates, so that invalid (negative) observations survive
-  into the dataset — that's the paper's core contribution (Section 2.1) and the model
-  cannot reproduce it if we start from pre-cleaned public indicators.
-- See `B. Documentation/2. Internal UIS Data Request.md` for the exact request to make.
+## Known limitations and deviations
 
-### Phase 3 — Data harmonization
-- `D. Code/D.1. Paper 1 - OOSC Cohort Model (4.1.4)/Python/harmonize_admin_data.py` — the three-step enrolment-count exclusion process
-  (Appendix A.2.1) and rate computation. **Verified on synthetic data**, including the
-  step-1/step-2 exclusion logic actually firing (not just a vacuous pass — see
-  the file's self-test for the specific data-shape bug this caught: enrolment
-  data can carry multiple education-level rows per age, one per on-time/delayed
-  population, which the exclusion rules must check per-age not per-row).
-- `harmonize_ipums_census.py` — IPUMS-I census samples -> weighted single-age x sex
-  out-of-school rates with delete-one-household Jackknife SEs, 1M-record cap per
-  sample (Appendix A.1/A.2.2). Output: `A. Data/A.2. Processed/ipums_census_oosc_observations.csv`.
-- `harmonize_dhs.py` — DHS household-member (PR) files -> same observation format,
-  PSU-clustered Jackknife SEs, wave = DHS phase. Output:
-  `A. Data/A.2. Processed/dhs_oosc_observations.csv`. Files fetched with
-  `download_dhs.py` (reuses a logged-in browser cookie).
-- `harmonize_mics.py` — MICS2-6 household-member (hl.sav) files -> same observation
-  format, cluster (HH1) Jackknife SEs, wave = MICS round; national surveys only.
-  Output: `A. Data/A.2. Processed/mics_oosc_observations.csv`.
-- `harmonize_wide.py` — the 14 available WIDE country surveys ("Other") -> 348
-  observations, paper-cited years only. WIDE files are published aggregates, so
-  these are by *education level*, not single age, with binomial SEs (no design
-  effect; empty where WIDE gives no sample count). They need a level-aggregated
-  likelihood term before the model can use them. **Not used in the model for now**
-  (single-age WIDE data unobtainable; see Data Sources Catalog). Output:
-  `A. Data/A.2. Processed/wide_oosc_observations.csv`.
-- Full pipeline (run in this order, from `D. Code/.../Python/`):
-  1. `build_population.py` — WPP 2024 by sex, Eurostat (SDG Europe), SingStat (SGP).
-  2. `prepare_admin_observations.py` — admin rates by single age x sex, Appendix
-     A.2.1 exclusions, -0.1 cutoff (supersedes `prepare_total_model_input.py`).
-  3. `harmonize_ipums_census.py`, `harmonize_dhs.py`, `harmonize_mics.py` — surveys.
-  4. `assemble_model_input.py --sex MF|M|F` — relative age, SDG regions,
-     series/waves, probit + Delta-method inputs.
-  5. `run_full_model.py --tag MF|M|F` — paper MCMC settings; writes estimates,
-     parameters and diagnostics to `A. Data/A.2. Processed/model_output/<tag>/`.
-- Admin enrolment: SQL step 6 (2000-2012) + step 6b (2013-2022). 2000-2002
-  are still thin (24-43 countries); see `B. Documentation/0. Decision Log.docx`.
-  (relative age, country/series/wave indices, probit + Delta-method SEs) with clustered-Jackknife sampling
-  variance (Appendix A.2.2) — not yet implemented, blocked on having real DHS/MICS
-  microdata to build/test against.
-- Age convention: age 1 = country's minimum entry age; ages run through late teens.
+- Public population revisions may differ from the paper's source vintage.
+- Survey sources may be registration-controlled, licensed, or available only as aggregates.
+- Aggregate education-level observations cannot automatically substitute for single-age observations.
+- Exact spline conventions, exclusion decisions, and regional classifications require explicit validation.
+- A full fit and paper-level comparison remain conditional on authorised administrative inputs.
 
-### Phase 4 — Model implementation
-- `D. Code/D.1. Paper 1 - OOSC Cohort Model (4.1.4)/Stan/oosc_cohort_model.stan` —
-  canonical implementation of Equations (1)-(37) (cohort process model + dual
-  administrative/survey likelihood), kept as the equation-level reference.
-- `D. Code/D.1. Paper 1 - OOSC Cohort Model (4.1.4)/Python/oosc_model_numpyro.py` —
-  the model actually run in this environment. Same model, ported to NumPyro/JAX
-  because CmdStan needs a C++ compiler and installing one (RTools) failed under
-  this session's sandboxing — see `B. Documentation/4. Model Notes.md` section 8
-  for the full Stan<->NumPyro correspondence and translation notes. **Verified
-  working**: compiles, samples via NUTS, produces valid kappa in [0,1] on
-  synthetic data (2026-09-11 smoke test).
-- Needs country-specific B-spline basis matrices (annual knots for mu, 5-year knots for
-  Theta/alpha) precomputed in Python and passed in as data — see the sibling
-  `Python/spline_basis.py`
-  (verified: partition-of-unity + entry-year-grid boundary checks pass).
+## Update standard
 
-### Phase 5 — Fitting
-- 4 chains, run separately for male/female/total populations (paper: 4000 iter, 2000
-  burn-in, thinned to 1000/chain — `run_mcmc()` in `oosc_model_numpyro.py` takes the
-  same warmup/samples/chains knobs). At full scale (192 countries) this is a
-  multi-hour-to-multi-day job even on NumPyro; plan for cloud/HPC compute (ideally
-  with a GPU, which JAX will use automatically if available), not a laptop.
-
-### Phase 6 — Validation & products
-- Out-of-sample validation (20% leave-out per country): MSE/MAE/aMSE/aMAE, coverage.
-- Reduced-model comparisons (Simple, NoBias, MuRW, MuK5) per Table 2.
-- Sensitivity analysis on knot spacing and tau priors per Table 3.
-- Aggregation to education level and SDG region, reproducing Figure 7 (out-of-school
-  population by region).
-
-## Known gaps vs. the paper (to resolve as we go)
-- Exact spline basis family/implementation (B-spline vs P-spline parameterization,
-  knot placement at boundaries) is under-specified in the paper text — we will document
-  our choices in `B. Documentation/4. Model Notes.md` as we make them.
-- The country-level exclusion rules for incomplete enrolment counts (Appendix A.2.1,
-  three-step process) require applying judgment per country; we'll log exceptions.
+Every substantive update should state what changed, which input or assumption it affects, how it was checked, and whether the result is synthetic, public-data-only, or restricted-data-only. See `PUBLICATION_NOTES.md` before pushing to a public repository.

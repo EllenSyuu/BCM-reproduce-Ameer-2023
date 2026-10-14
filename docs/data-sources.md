@@ -6,12 +6,12 @@ This catalogue is written for a public reader. It describes source classes, acce
 
 | Source class | Model role | Public status |
 |---|---|---|
-| Single-age population denominators | Denominator for administrative and survey rates | Public references and acquisition code; local files excluded. |
-| Administrative enrolment counts | Main likelihood component | Restricted input; not included or publishable here. |
-| Household survey microdata | Survey likelihood and cross-checks | Access and licensing vary; only permitted local copies may be used. |
-| Census/IPUMS extracts | Survey/census observations | Registration and extract terms apply; do not redistribute. |
-| Published aggregate survey tables | Supplemental evidence | May be incompatible with a single-age likelihood. |
-| Official published indicators | Validation reference | Validation target, not a substitute for raw model inputs. |
+| **Single-age population denominators** | Denominator for administrative and survey rates | Public references and acquisition code; local files excluded. |
+| **Administrative enrolment counts** | Main likelihood component | Restricted input; not included or publishable here. |
+| **Household survey microdata** | Survey likelihood and cross-checks | Access and licensing vary; only permitted local copies may be used. |
+| **Census/IPUMS extracts** | Survey/census observations | Registration and extract terms apply; do not redistribute. |
+| **Published aggregate survey tables** | Supplemental evidence | May be incompatible with a single-age likelihood. |
+| **Official published indicators** | Validation reference | Validation target, not a substitute for raw model inputs. |
 
 ## Population denominators
 
